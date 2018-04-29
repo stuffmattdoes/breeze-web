@@ -23,42 +23,32 @@ window.addEventListener('resize', resizeCanvas);
 
 function init() {
     waves.push(
-        // new Wave(ctx, {
-        //     amplitude: 45,
-        //     fill: 'rgba(255, 255, 255, 0.08)',
-        //     frequency: 3,
-        //     phase: 0,
-        //     pos: {
-        //         x: cw,
-        //         y: ch * 0.9
-        //     },
-        //     segments: 150,
-        //     // speed: 200
-        // }),
-        // new Wave(ctx, {
-        //     amplitude: 45,
-        //     fill: 'rgba(255, 255, 255, 0.2)',
-        //     frequency: 2,
-        //     phase: 0,
-        //     pos: {
-        //         x: cw,
-        //         y: ch * 0.9
-        //     },
-        //     segments: 150,
-        //     // speed: 150
-        // }),
-        // new Wave(ctx, {
-        //     amplitude: 45,
-        //     fill: 'rgba(255, 255, 255, 0.4)',
-        //     frequency: 1.5,
-        //     phase: 0,
-        //     pos: {
-        //         x: cw,
-        //         y: ch * 0.9
-        //     },
-        //     segments: 150,
-        //     // speed: 100
-        // }),
+        new Wave(ctx, {
+            amplitude: 45,
+            fill: 'rgba(255, 255, 255, 0.2)',
+            frequency: 2,
+            phase: 120,
+            pos: {
+                x: cw,
+                y: ch * 0.9
+            },
+            segments: 150,
+            speed: 0.5,
+            turbulence: true
+        }),
+        new Wave(ctx, {
+            amplitude: 45,
+            fill: 'rgba(255, 255, 255, 0.4)',
+            frequency: .8,
+            phase: 60,
+            pos: {
+                x: cw,
+                y: ch * 0.9
+            },
+            segments: 150,
+            speed: 0.5,
+            turbulence: true
+        }),
         new Wave(ctx, {
             amplitude: 45,
             fill: 'rgba(255, 255, 255, 0.6)',
@@ -69,7 +59,8 @@ function init() {
                 y: ch * 0.9
             },
             segments: 150,
-            speed: 0.5
+            speed: 0.5,
+            turbulence: true
         })
     );
 
@@ -77,7 +68,7 @@ function init() {
 }
 
 function Wave(context, props) {
-    const { amplitude, fill, frequency, phase, pos, segments, speed } = props;
+    const { amplitude, fill, frequency, phase, pos, segments, speed, turbulence } = props;
     let frames = 0;
     let phi, x, y;
 
@@ -90,6 +81,11 @@ function Wave(context, props) {
 
         for (let i = 0; i <= segments; i++) {
             y = Math.sin((toRad(frequency) * i - phi) + phase) * amplitude;
+
+            if (turbulence) {
+                y += Math.sin((toRad(frequency * 2.7) * i - phi) + phase) * amplitude / 1.6;
+            }
+
             context.lineTo(cw - (cw / segments) * i, y + pos.y);
         }
 
