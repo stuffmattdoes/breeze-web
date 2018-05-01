@@ -25,9 +25,9 @@ function init() {
     waves.push(
         new Wave(ctx, {
             amplitude: 45,
-            fill: 'rgba(255, 255, 255, 0.2)',
-            frequency: 2,
-            phase: 120,
+            fill: 'rgba(255, 255, 255, 0.4)',
+            frequency: .15,
+            phase:  Math.floor(Math.random() * Math.floor(360)),
             pos: {
                 x: cw,
                 y: ch * 0.9
@@ -39,8 +39,8 @@ function init() {
         new Wave(ctx, {
             amplitude: 45,
             fill: 'rgba(255, 255, 255, 0.4)',
-            frequency: .8,
-            phase: 60,
+            frequency: .12,
+            phase:  Math.floor(Math.random() * Math.floor(360)),
             pos: {
                 x: cw,
                 y: ch * 0.9
@@ -51,8 +51,9 @@ function init() {
         }),
         new Wave(ctx, {
             amplitude: 45,
-            fill: 'rgba(255, 255, 255, 0.6)',
-            frequency: 1.5,
+            fill: 'rgba(255, 255, 255, 0.4)',
+            frequency: .1,
+            phase:  Math.floor(Math.random() * Math.floor(360)),
             phase: 0,
             pos: {
                 x: cw,
@@ -80,13 +81,15 @@ function Wave(context, props) {
         context.moveTo(cw, ch);
 
         for (let i = 0; i <= segments; i++) {
-            y = Math.sin((toRad(frequency) * i - phi) + phase) * amplitude;
+            x = cw - (cw / segments) * i;
+            y = Math.sin((toRad(frequency) * x + phi) + phase) * amplitude;
+            // y = Math.sin(toRad(frequency) * i + phase) * amplitude;
 
             if (turbulence) {
-                y += Math.sin((toRad(frequency * 2.7) * i - phi) + phase) * amplitude / 1.6;
+                y += Math.sin((toRad(frequency * 3.7) * x + phi) + phase) * amplitude / 1.5;
             }
 
-            context.lineTo(cw - (cw / segments) * i, y + pos.y);
+            context.lineTo(x, y + pos.y);
         }
 
         context.lineTo(0, ch);
