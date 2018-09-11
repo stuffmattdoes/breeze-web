@@ -1,3 +1,16 @@
+
+$font-body: 'Open Sans';
+$font-main: 'Montserrat';
+$transition-moderate: 150ms;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $font-body;
+}
+
 .wrapper {
     align-items: center;
     background: linear-gradient(#59A8FF, #4D4DDE);
@@ -18,7 +31,7 @@
 
 h1 {
     color: white;
-    font-family: 'Montserrat';
+    font-family: $font-main;
     font-size: 36px;
     line-height: 1.22;
     margin: 0 0 24px;
@@ -27,10 +40,10 @@ h1 {
 
 p {
     color: white;
-    font-family: 'Open Sans';
+    font-family: $font-body;
     font-size: 18px;
     font-weight: 300;
-    line-height: 1.33;
+    line-height: 1.5;
     margin: 0 0 12px;
 }
 
@@ -39,8 +52,7 @@ strong {
 }
 
 .content {
-    /* display: none; */
-    max-width: 680px;
+    max-width: 760px;
     padding: 32px;
     position: relative;
     text-align: center;
@@ -53,7 +65,7 @@ strong {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     color: rgba(0, 0, 0, 0.8);
     display: block;
-    font-family: 'Open Sans';
+    font-family: $font-body;
     font-size: 15px;
     font-weight: 700;
     min-width: 220px;
@@ -73,14 +85,42 @@ strong {
     background-color: #50E3C2;
 }
 
-.dash-line {
-    border: 2px dashed rgba(255, 255, 255, 0.4);
-}
-
-.box {
+.file-dnd-area {
     align-items: center;
-    display: flex;
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+    color: white;
+    cursor: pointer;
     justify-content: center;
     margin-top: 24px;
+    overflow: hidden;
     padding: 32px;
+    position: relative;
+    text-overflow: ellipsis;
+    transition: $transition-moderate;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    &__button {
+        background-color: white;
+        color: black;
+        margin-right: 16px;
+        padding: 8px 12px;
+    }
+
+    &__input {
+        cursor: pointer;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    &__text {
+
+    }
 }
