@@ -4,9 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "next build",
+    "dev": "next ./src",
+    "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@zeit/next-sass": "^0.2.0",
+    "next": "^6.1.2",
+    "node-sass": "^4.9.3",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0"
+  }
 }
