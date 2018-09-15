@@ -11,7 +11,9 @@ class Home extends React.Component {
         super(props);
         this.state = {
             file: null,
-            transactions: null
+            headlineIndex: Math.floor(Math.random() * Math.floor(headlines.length)),
+            transactions: null,
+            uploadError: null
         }
 
         // Refs
@@ -37,12 +39,12 @@ class Home extends React.Component {
         axios.post('http://localhost:3001/api/v1/transactions', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         }).then(res => this.setState({ transactions: res.data }))
-        .catch(err => console.log('Error', err));
+        .catch(err => this.setState({ uploadError: err }));
     }
 
     render() {
-        const { file } = this.state;
-        console.log(this.state);
+        const { file, headlineIndex } = this.state;
+        const headline = headlines[headlineIndex];
 
         return (
             <main className='app'>
@@ -54,8 +56,8 @@ class Home extends React.Component {
                 <div className='page page-upload page--center'>
                     <div className='container'>
                         <div className='grid'>
-                            <h1>Stop living paycheck to paycheck ❌</h1>
-                            <h2>Instead, Build a Budget with us in 15 minutes ✅</h2>
+                            <h1>{headline.head}</h1>
+                            <h2>{headline.sub}</h2>
                             <div className='dnd'>
                                 <button className='dnd__button'>Choose File</button>
                                 { file ?
@@ -86,5 +88,16 @@ class Home extends React.Component {
         );
     }
 }
+
+const headlines = [
+    {
+        'head': 'Stop living paycheck to paycheck 😰 ❌',
+        'sub': 'Instead, Build a Budget with us and learn to relax a little 🙃 ✅',
+    },
+    {
+        'head': 'Don\'t die broke and lonely 😰 ❌',
+        'sub': 'Instead, Build a Budget with us and start saving for later 🙃 ✅',
+    },
+]
 
 export default Home;
