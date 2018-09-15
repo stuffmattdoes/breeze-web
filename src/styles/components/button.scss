@@ -1,0 +1,35 @@
+.btn {
+    align-items: center;
+    background-color: #212121;
+    border: none;
+    border-radius: 4px;
+    color: #212121;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: $font-body;
+    font-size: 16px;
+    font-weight: bold;
+    justify-content: center;
+    margin-top: 24px;
+    outline: none;
+    padding: 12px 24px;
+    text-transform: uppercase;
+
+    &:first-child {
+        margin-top: 0;
+    }
+    
+    &--alt {
+        background-color: #d1d1d1;
+    }
+
+    &--disabled {
+        background-color: #ebebeb !important;
+        color: #a6a6a6;
+        cursor: auto;
+    }
+
+    &--main {
+        background-color: #2af5c7;
+    }
+}

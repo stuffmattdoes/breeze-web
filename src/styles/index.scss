@@ -1,9 +1,18 @@
 // Vendor
 @import 'vendor/reset';
 
+// Foundation
+@import 'foundation/variables';
+@import 'foundation/typography';
+
 // Components
+@import 'components/button';
+@import 'components/dnd';
+@import 'components/grid';
+@import 'components/magical';
 
 // Pages
+@import 'pages/upload';
 
 // General
 @import 'styles';

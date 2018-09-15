@@ -1,0 +1,52 @@
+$font-main: 'Montserrat';
+$font-body: 'Open Sans';
+
+h1 {
+    color: #111;
+    font-family: $font-main;
+    font-size: 48px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-bottom: 32px;
+    text-transform: uppercase;
+}
+
+h2 {
+    color: #111;
+    font-family: $font-main;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-bottom: 32px;
+}
+
+h3 {
+    color: #111;
+    font-family: $font-main;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.25;
+    margin-bottom: 24px;
+}
+
+h4 {
+    color: #111;
+    font-family: $font-body;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+p {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.text--bold {
+    font-weight: bold;
+}
+
+@media screen and (min-width: $desktop) {
+    h1 {
+        font-size: 72px;
+    }
+}

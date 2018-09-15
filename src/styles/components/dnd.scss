@@ -1,0 +1,31 @@
+.dnd {
+    align-items: center;
+    border: 5px dashed rgba(black, 0.4);
+    color: black;
+    cursor: pointer;
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    margin-top: 48px;
+    overflow: hidden;
+    padding: 64px 32px;
+    position: relative;
+    text-overflow: ellipsis;
+    transition: $transition-moderate;
+    
+    &__button {
+        @extend .btn;
+        @extend .btn--alt;
+        margin-right: 24px;
+    }
+    
+    &__input {
+        cursor: pointer;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+}
