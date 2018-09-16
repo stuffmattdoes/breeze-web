@@ -49,7 +49,7 @@ class Home extends React.Component {
     render() {
         const { file, headlineIndex } = this.state;
         const headline = headlines[headlineIndex];
-        console.log(this.props.transactions);
+        console.log(this.state.transactions);
 
         return (
             <main className='app'>
