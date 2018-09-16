@@ -4,6 +4,9 @@ import Head from 'next/head';
 import React from 'react';
 import 'isomorphic-fetch';
 
+// Components
+import Loader from '../components/loader';
+
 // Styles
 import main from '../styles/index.scss';
 
@@ -13,6 +16,7 @@ class Home extends React.Component {
         this.state = {
             file: null,
             headlineIndex: props.headlineIndex,
+            isFetching: false,
             transactions: null,
             uploadError: null
         }
@@ -43,13 +47,15 @@ class Home extends React.Component {
         axios.post('http://localhost:3001/api/v1/transactions', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         }).then(res => this.setState({ transactions: res.data }))
-        .catch(err => this.setState({ uploadError: err }));
+        .catch(err => this.setState({ uploadError: err }))
+        .then(() => this.setState({ isFetching: false }));
+
+        this.setState({ isFetching: true });
     }
 
     render() {
-        const { file, headlineIndex } = this.state;
+        const { file, headlineIndex, isFetching } = this.state;
         const headline = headlines[headlineIndex];
-        console.log(this.state.transactions);
 
         return (
             <main className='app'>
@@ -80,10 +86,12 @@ class Home extends React.Component {
                             <div className='upload-submit'>
                                 <button className={classnames([
                                     'btn',
-                                    { 'btn--disabled': !!!file },
+                                    { 'btn--disabled': !!!file || isFetching },
                                     { 'magical-l': !!file },
                                     'btn--main'
-                                ])} disabled={!!!file} onClick={this.onSubmitTransactions}>Let's Go!</button>
+                                ])} disabled={!!!file || isFetching} onClick={this.onSubmitTransactions}>
+                                { isFetching ? <span>Uploading... <Loader /></span> : 'Let\'s Go!' }
+                                </button>
                             </div>
                         </div>
                     </div>

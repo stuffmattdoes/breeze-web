@@ -24,6 +24,7 @@
     }
 
     &--disabled {
+        animation: none !important;
         background-color: #ebebeb !important;
         color: #a6a6a6;
         cursor: auto;
