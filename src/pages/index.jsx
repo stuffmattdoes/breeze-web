@@ -2,6 +2,7 @@ import axios from 'axios';
 import classnames from 'classnames';
 import Head from 'next/head';
 import React from 'react';
+import 'isomorphic-fetch';
 
 // Styles
 import main from '../styles/index.scss';
@@ -11,7 +12,7 @@ class Home extends React.Component {
         super(props);
         this.state = {
             file: null,
-            headlineIndex: Math.floor(Math.random() * Math.floor(headlines.length)),
+            headlineIndex: props.headlineIndex,
             transactions: null,
             uploadError: null
         }
@@ -23,12 +24,15 @@ class Home extends React.Component {
         this.onSubmitTransactions = this.onSubmitTransactions.bind(this);
     }
 
-    // Next.js-specific lifecycle method, called on server
+    // Next.js-specific lifecycle method, called on server, populates as props in component
     static async getInitialProps(prop) {
         const { req } = prop;
         const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
+        const res = await fetch('http://localhost:3001/api/v1/categories');
+        const categories = await res.json();
+        const headlineIndex = Math.floor(Math.random() * Math.floor(headlines.length));
         
-        return { userAgent };
+        return { categories, headlineIndex, userAgent };
     }
 
     onSubmitTransactions(e) {
@@ -45,6 +49,7 @@ class Home extends React.Component {
     render() {
         const { file, headlineIndex } = this.state;
         const headline = headlines[headlineIndex];
+        console.log(this.props.transactions);
 
         return (
             <main className='app'>
@@ -92,11 +97,15 @@ class Home extends React.Component {
 const headlines = [
     {
         'head': 'Stop living paycheck to paycheck 😰 ❌',
-        'sub': 'Instead, Build a Budget with us and learn to relax a little 🙃 ✅',
+        'sub': 'Instead, build a budget with us and learn to relax a little 🙃 ✅',
     },
     {
         'head': 'Don\'t die broke and lonely 😰 ❌',
-        'sub': 'Instead, Build a Budget with us and start saving for later 🙃 ✅',
+        'sub': 'Instead, build a budget with us and start saving for later 🙃 ✅',
+    },
+    {
+        'head': 'Stop missing your bill payments 😰 ❌',
+        'sub': 'Instead, build a budget with us and pay \'em off early 🙃 ✅',
     },
 ]
 
