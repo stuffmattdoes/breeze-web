@@ -21,12 +21,14 @@ footer {
 }
 
 .app {
-    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    min-height: calc(100vh - 48px);
 }
 
 .container {
-    padding: 0 16px;
-    // text-align: center;
+    padding: 32px 16px;
 }
 
 .icon-text {
@@ -38,13 +40,9 @@ footer {
     }
 }
 
-.page {
-    min-height: calc(100vh - 48px);
-    
-    &--center {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+.valign {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

@@ -2,7 +2,11 @@ import axios from 'axios';
 import classnames from 'classnames';
 import Head from 'next/head';
 import React from 'react';
+import Router from 'next/router';
 import 'isomorphic-fetch';
+
+// Context
+// import { GlobalContext } from '../context/global';
 
 // Components
 import Loader from '../components/loader';
@@ -17,7 +21,6 @@ class Home extends React.Component {
             file: null,
             headlineIndex: props.headlineIndex,
             isFetching: false,
-            transactions: null,
             uploadError: null
         }
 
@@ -32,11 +35,9 @@ class Home extends React.Component {
     static async getInitialProps(prop) {
         const { req } = prop;
         const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
-        const res = await fetch('http://localhost:3001/api/v1/categories');
-        const categories = await res.json();
         const headlineIndex = Math.floor(Math.random() * Math.floor(headlines.length));
         
-        return { categories, headlineIndex, userAgent };
+        return { headlineIndex, userAgent };
     }
 
     onSubmitTransactions(e) {
@@ -46,24 +47,19 @@ class Home extends React.Component {
         formData.append('file', file);
         axios.post('http://localhost:3001/api/v1/transactions', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(res => this.setState({ transactions: res.data }))
+        }).then(res => this.props.updateState({ transactions: res.data }))
         .catch(err => this.setState({ uploadError: err }))
-        .then(() => this.setState({ isFetching: false }));
+        .then(() => Router.push('/categorize'));
 
         this.setState({ isFetching: true });
     }
 
     render() {
         const { file, headlineIndex, isFetching } = this.state;
-        const headline = headlines[headlineIndex];
+        const headline = headlines[ headlineIndex ];
 
         return (
-            <main className='app'>
-                <Head>
-                    <link rel='stylesheet' href='/_next/static/style.css' />
-                    <meta charset='utf-8' />
-                    <title>Breeze Budgeting</title>
-                </Head>
+            // <GlobalContext.Consumer>{ props => 
                 <div className='page page-upload page--center'>
                     <div className='container'>
                         <div className='grid'>
@@ -96,8 +92,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
-                <footer><div className='footer__container'>Made by <a href='#'>Breeze</a></div></footer>
-            </main>
+            // }</GlobalContext.Consumer>
         );
     }
 }
@@ -107,14 +102,14 @@ const headlines = [
         'head': 'Stop living paycheck to paycheck 😰 ❌',
         'sub': 'Instead, build a budget with us and learn to relax a little 🙃 ✅',
     },
-    {
-        'head': 'Don\'t die broke and lonely 😰 ❌',
-        'sub': 'Instead, build a budget with us and start saving for later 🙃 ✅',
-    },
-    {
-        'head': 'Stop missing your bill payments 😰 ❌',
-        'sub': 'Instead, build a budget with us and pay \'em off early 🙃 ✅',
-    },
+    // {
+    //     'head': 'Don\'t die broke and lonely 😰 ❌',
+    //     'sub': 'Instead, build a budget with us and start saving for later 🙃 ✅',
+    // },
+    // {
+    //     'head': 'Stop missing your bill payments 😰 ❌',
+    //     'sub': 'Instead, build a budget with us and pay \'em off early 🙃 ✅',
+    // },
 ]
 
 export default Home;
