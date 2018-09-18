@@ -1,13 +1,33 @@
 import React from 'react';
 
+import Select from '../components/select';
+
 class Categorize extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
+    }
+
+    roundTwoDecimals(val) {
+        return parseFloat(Math.round(val * 100) / 100).toFixed(2);
+    }
+
+    renderCategories() {
+        const { categories } = this.props;
+        
+        return categories
+            .filter(cat => !cat.parentId && categories.find(cat2 => cat.id === cat2.parentId))
+            .map((catParent, i) => (
+                <optgroup key={i} label={`${catParent.emoji.symbol} ${catParent.name}`}>
+                    <option value={catParent.id}>{catParent.emoji.symbol} {catParent.name}</option>
+                    {categories
+                        .filter(catChild => catChild.parentId === catParent.id)
+                        .map((catChild, i) => <option key={i} value={catChild.id}>{catChild.emoji.symbol} {catChild.name}</option>)}
+                </optgroup>
+            ));
     }
 
     render() {
-        const { transactions } = this.props;
+        const { categories, transactions } = this.props;
 
         return (
             <div className='page page-categorize'>
@@ -19,20 +39,20 @@ class Categorize extends React.Component {
                         <ul className='transactions'>
                             {transactions.map((trans, i) => {
                                 if (i > 10) return null;
-
+                                
                                 return (
                                     <li className='transaction' key={i}>
                                         <div className='transaction__date'>
-                                            {trans.date}&nbsp;&nbsp;
+                                            {trans.date.split('/').splice(0, 2).join('/')}&nbsp;&nbsp;
                                         </div>
                                         <div className='transaction__merchant'>
                                             {trans.merchant || trans.descriptor}&nbsp;&nbsp;
                                         </div>
-                                        <select>
-                                            <option>{trans.category.join(' - ')}</option>&nbsp;&nbsp;
-                                        </select>
+                                        <Select value={trans.category.id} onChange={e => {}}>
+                                            {this.renderCategories()}
+                                        </Select>
                                         <div className='transaction__amount'>
-                                            ${trans.amount}
+                                            ${this.roundTwoDecimals(trans.amount)}
                                         </div>
                                     </li>
                                 );

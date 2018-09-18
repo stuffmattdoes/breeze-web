@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-class Loader extends PureComponent {
+class Loader extends React.PureComponent {
     render() {
         const { className, size } = this.props;
 

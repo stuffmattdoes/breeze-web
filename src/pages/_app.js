@@ -11,7 +11,6 @@ export default class MyApp extends App {
             categories: props.categories,
             transactions: null
         }
-        this.updateState = this.updateState.bind(this);
     }
 
     // Next.js-specific lifecycle method, called on server, populates as props in component
@@ -28,17 +27,13 @@ export default class MyApp extends App {
         return { categories, pageProps };
     }
 
-    updateState(payload) {
-        this.setState(payload);
-    }
-
     render () {
         const { Component, pageProps } = this.props
 
         return <Container>
             {/* <GlobalContext.Provider value={this.state}> */}
                 <main className='app'>
-                    <Component {...pageProps} {...this.state} updateState={this.updateState} />
+                    <Component {...pageProps} {...this.state} updateState={payload => this.setState(payload)} />
                 </main>
             {/* </GlobalContext.Provider> */}
         </Container>

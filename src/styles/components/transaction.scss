@@ -1,14 +1,29 @@
 .transaction {
     align-items: center;
+    background-color: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
     display: flex;
     justify-content: space-between;
+    padding: 12px 16px;
 
     &__amount {
         min-width: 115px;
         text-align: right;
     }
 
+    &__date {
+        color: #999;
+        font-size: 12px;
+        min-width: 48px;
+    }
+
     &__merchant {
         width: 100%;
     }
+}
+
+.transactions {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-top: 32px;
 }

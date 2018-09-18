@@ -63,32 +63,34 @@ class Home extends React.Component {
                 <div className='page page-upload page--center'>
                     <div className='container'>
                         <div className='grid'>
-                            <h1>{headline.head}</h1>
-                            <h2>{headline.sub}</h2>
-                            <div className='dnd'>
-                                <button className='dnd__button'>Choose File</button>
-                                { file ?
-                                    <span className='dnd__file icon-text'>
-                                        <svg fill='#4E5BE3' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
-                                            <path d='M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z'/>
-                                            <path d='M0 0h24v24H0z' fill='none'/>
-                                        </svg>
-                                        {file.name}
-                                    </span>
-                                    : <p className='dnd__text'>Download your bank transactions (<span className='text--bold'>.csv</span> file format) and upload here 👇</p>
-                                }
-                                <input className='dnd__input' onChange={e => this.setState({ file: this.inputRef.current.files[0] })} ref={this.inputRef} type='file'/>
-                            </div>
-                            <div className='upload-submit'>
-                                <button className={classnames([
-                                    'btn',
-                                    { 'btn--disabled': !!!file || isFetching },
-                                    { 'magical-l': !!file },
-                                    'btn--main'
-                                ])} disabled={!!!file || isFetching} onClick={this.onSubmitTransactions}>
-                                { isFetching ? <span>Uploading... <Loader /></span> : 'Let\'s Go!' }
-                                </button>
-                            </div>
+                            <form>
+                                <h1>{headline.head}</h1>
+                                <h2>{headline.sub}</h2>
+                                <div className='dnd'>
+                                    <button className='dnd__button'>Choose File</button>
+                                    { file ?
+                                        <span className='dnd__file icon-text'>
+                                            <svg fill='#4E5BE3' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>
+                                                <path d='M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z'/>
+                                                <path d='M0 0h24v24H0z' fill='none'/>
+                                            </svg>
+                                            {file.name}
+                                        </span>
+                                        : <p className='dnd__text'>Download your bank transactions (<span className='text--bold'>.csv</span> file format) and upload here 👇</p>
+                                    }
+                                    <input className='dnd__input' onChange={e => this.setState({ file: this.inputRef.current.files[0] })} ref={this.inputRef} type='file'/>
+                                </div>
+                                <div className='upload-submit'>
+                                    <button className={classnames([
+                                        'btn',
+                                        { 'btn--disabled': !!!file || isFetching },
+                                        { 'magical-l': !!file },
+                                        'btn--main'
+                                    ])} disabled={!!!file || isFetching} onClick={this.onSubmitTransactions} type='submit'>
+                                    { isFetching ? <span>Uploading... <Loader /></span> : 'Let\'s Go!' }
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

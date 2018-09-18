@@ -1,0 +1,12 @@
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #f5f5f5;
+    border: 1px solid #cecccc;
+    border-radius: 4px;
+    font-family: $font-body;
+    font-size: 15px;
+    min-width: 175px;
+    padding: 6px 24px 6px 8px;
+    position: relative;
+}
