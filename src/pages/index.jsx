@@ -6,7 +6,7 @@ import Router from 'next/router';
 import 'isomorphic-fetch';
 
 // Context
-// import { GlobalContext } from '../context/global';
+import GlobalContext from '../context/global';
 
 // Components
 import Loader from '../components/loader';
@@ -40,14 +40,14 @@ class Home extends React.Component {
         return { headlineIndex, userAgent };
     }
 
-    onSubmitTransactions(e) {
+    onSubmitTransactions(e, props) {
         const { file } = this.state;
         let formData = new FormData();
 
         formData.append('file', file);
         axios.post('http://localhost:3001/api/v1/transactions', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(res => this.props.onUpdateState({ transactions: res.data }))
+        }).then(res => props.actions.onLoadTransactions(res.data))
         .catch(err => this.setState({ uploadError: err }))
         .then(() => Router.push('/categorize'));
 
@@ -59,7 +59,7 @@ class Home extends React.Component {
         const headline = headlines[ headlineIndex ];
 
         return (
-            // <GlobalContext.Consumer>{ props => 
+            <GlobalContext.Consumer>{ props => 
                 <div className='page page-upload page--center'>
                     <div className='container'>
                         <div className='grid'>
@@ -86,7 +86,7 @@ class Home extends React.Component {
                                         { 'btn--disabled': !!!file || isFetching },
                                         { 'magical-l': !!file },
                                         'btn--main'
-                                    ])} disabled={!!!file || isFetching} onClick={this.onSubmitTransactions} type='submit'>
+                                    ])} disabled={!!!file || isFetching} onClick={e => this.onSubmitTransactions(e, props)} type='submit'>
                                     { isFetching ? <span>Uploading... <Loader /></span> : 'Let\'s Go!' }
                                     </button>
                                 </div>
@@ -94,7 +94,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
-            // }</GlobalContext.Consumer>
+            }</GlobalContext.Consumer>
         );
     }
 }
