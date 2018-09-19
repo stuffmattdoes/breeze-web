@@ -48,7 +48,7 @@ class Categorize extends React.Component {
                                         <div className='transaction__merchant'>
                                             {trans.merchant || trans.descriptor}&nbsp;&nbsp;
                                         </div>
-                                        <Select value={trans.category.id} onChange={e => {}}>
+                                        <Select value={trans.category} onChange={val => this.props.onUpdateTransaction(trans.id, { category: val })}>
                                             {this.renderCategories()}
                                         </Select>
                                         <div className='transaction__amount'>

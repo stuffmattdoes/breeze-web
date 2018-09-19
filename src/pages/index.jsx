@@ -47,7 +47,7 @@ class Home extends React.Component {
         formData.append('file', file);
         axios.post('http://localhost:3001/api/v1/transactions', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(res => this.props.updateState({ transactions: res.data }))
+        }).then(res => this.props.onUpdateState({ transactions: res.data }))
         .catch(err => this.setState({ uploadError: err }))
         .then(() => Router.push('/categorize'));
 

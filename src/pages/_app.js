@@ -11,6 +11,8 @@ export default class MyApp extends App {
             categories: props.categories,
             transactions: null
         }
+
+        this.onUpdateTransaction = this.onUpdateTransaction.bind(this);
     }
 
     // Next.js-specific lifecycle method, called on server, populates as props in component
@@ -27,13 +29,24 @@ export default class MyApp extends App {
         return { categories, pageProps };
     }
 
+    onUpdateTransaction(transId, update) {
+        let nextTransactions = this.state.transactions.map(trans => {
+            if (trans.id !== transId) return trans;
+
+            trans = { ...trans, ...update};
+            return trans;
+        });
+
+        this.setState({ transactions: nextTransactions });
+    }
+
     render () {
         const { Component, pageProps } = this.props
 
         return <Container>
             {/* <GlobalContext.Provider value={this.state}> */}
                 <main className='app'>
-                    <Component {...pageProps} {...this.state} updateState={payload => this.setState(payload)} />
+                    <Component {...pageProps} {...this.state} onUpdateTransaction={this.onUpdateTransaction} onUpdateState={payload => this.setState(payload)} />
                 </main>
             {/* </GlobalContext.Provider> */}
         </Container>

@@ -13,7 +13,7 @@ class Select extends React.Component {
 
     onChange(e) {
         this.setState({ selected: e.target.value });
-        this.props.onChange(e);
+        this.props.onChange(e.target.value);
     }
 
     render() {
