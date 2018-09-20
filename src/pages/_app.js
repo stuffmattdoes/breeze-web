@@ -2,9 +2,9 @@ import App, { Container } from 'next/app'
 import React from 'react'
 
 // Context
-import GlobalContext from '../context/global';
+import GlobalProvider, { withContext } from '../context/global';
 
-export default class MyApp extends App {
+class MyApp extends App {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,28 +13,34 @@ export default class MyApp extends App {
     }
 
     // Next.js-specific lifecycle method, called on server, populates as props in component
-    static async getInitialProps({ Component, router, ctx }) {
-        let pageProps = {}
-
+    static async getInitialProps(props) {
+        console.log('getInitialProps - app');
+        const { Component, ctx, router } = props;
+        const userAgent = ctx.req ? ctx.req.headers['user-agent'] : navigator.userAgent;
         const res = await fetch('http://localhost:3001/api/v1/categories');
         const categories = await res.json();
+        let pageProps = {};
 
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx)
         }
-        
+
+        // this.props.actions.onUpdateGlobalContext({ categories });
         return { categories, pageProps };
     }
 
     render () {
-        const { Component, pageProps } = this.props
+        const { Component, pageProps } = this.props;
+        // console.log('props', this.props);
 
         return <Container>
-            <GlobalContext>
+            <GlobalProvider {...this.state} >
                 <main className='app'>
-                    <Component {...pageProps} {...this.state} onUpdateState={payload => this.setState(payload)} />
+                    <Component {...pageProps} />
                 </main>
-            </GlobalContext>
+            </GlobalProvider>
         </Container>
     }
 }
+
+export default MyApp;

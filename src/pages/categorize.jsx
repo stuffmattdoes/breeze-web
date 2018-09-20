@@ -1,21 +1,18 @@
 // Libs
 import React from 'react';
-import GlobalContext from '../context/global';
+import { withContext } from '../context/global';
 
 // Components
 import Select from '../components/select';
 
 class Categorize extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     roundTwoDecimals(val) {
         return parseFloat(Math.round(val * 100) / 100).toFixed(2);
     }
 
     renderCategories() {
-        const { categories } = this.props;
+        const { categories } = this.props.state;
 
         return categories
             .filter(cat => !cat.parentId && categories.find(cat2 => cat.id === cat2.parentId))
@@ -31,41 +28,39 @@ class Categorize extends React.Component {
 
     render() {
         return (
-            <GlobalContext.Consumer>{ props => 
-                <div className='page page-categorize'>
-                    <div className='container'>
-                        <div className='grid'>
-                            <h1>Categorize</h1>
-                            <h3>We've done some work and generated organized your transactions into categories.</h3>
-                            <h4>We couldn't figure them all out, though. We'll need you to double-check that the categories are correct, and fill in the ones that are missing.</h4>
-                            <ul className='transactions'>
-                                {props.state.transactions.map((trans, i) => {
-                                    if (i > 10) return null;
-                                    
-                                    return (
-                                        <li className='transaction' key={i}>
-                                            <div className='transaction__date'>
-                                                {trans.date.split('/').splice(0, 2).join('/')}&nbsp;&nbsp;
-                                            </div>
-                                            <div className='transaction__merchant'>
-                                                {trans.merchant || trans.descriptor}&nbsp;&nbsp;
-                                            </div>
-                                            <Select value={trans.category} onChange={val => props.actions.onUpdateTransaction(trans.id, { category: val })}>
-                                                {this.renderCategories()}
-                                            </Select>
-                                            <div className='transaction__amount'>
-                                                ${this.roundTwoDecimals(trans.amount)}
-                                            </div>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
+            <div className='page page-categorize'>
+                <div className='container'>
+                    <div className='grid'>
+                        <h1>Categorize</h1>
+                        <h3>We've done some work and generated organized your transactions into categories.</h3>
+                        <h4>We couldn't figure them all out, though. We'll need you to double-check that the categories are correct, and fill in the ones that are missing.</h4>
+                        <ul className='transactions'>
+                            {this.props.state.transactions.map((trans, i) => {
+                                if (i > 10) return null;
+                                
+                                return (
+                                    <li className='transaction' key={i}>
+                                        <div className='transaction__date'>
+                                            {trans.date.split('/').splice(0, 2).join('/')}&nbsp;&nbsp;
+                                        </div>
+                                        <div className='transaction__merchant'>
+                                            {trans.merchant || trans.descriptor}&nbsp;&nbsp;
+                                        </div>
+                                        <Select value={trans.category} onChange={val => this.props.actions.onUpdateTransaction(trans.id, { category: val })}>
+                                            {this.renderCategories()}
+                                        </Select>
+                                        <div className='transaction__amount'>
+                                            ${this.roundTwoDecimals(trans.amount)}
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </ul>
                     </div>
                 </div>
-            }</GlobalContext.Consumer>
+            </div>
         )
     }
 }
 
-export default Categorize;
+export default withContext(Categorize);

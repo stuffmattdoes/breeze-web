@@ -2,9 +2,6 @@
 
 import Document, { Head, Main, NextScript } from 'next/document'
 
-// Context
-// import GlobalContext from '../context/global';
-
 export default class MyDocument extends Document {
     render() {
         return (
