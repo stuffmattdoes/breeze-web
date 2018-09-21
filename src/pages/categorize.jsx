@@ -1,14 +1,30 @@
-// Libs
+import classnames from 'classnames';
 import React from 'react';
 import { withContext } from '../context/global';
 
 // Components
+import Loader from '../components/loader';
 import Select from '../components/select';
 
 class Categorize extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isFetching: false,
+            transactionStep: 0,
+            uploadError: null
+        }
+
+        this.onSubmitTransactions = this.onSubmitTransactions.bind(this);
+    }
 
     roundTwoDecimals(val) {
         return parseFloat(Math.round(val * 100) / 100).toFixed(2);
+    }
+
+    static async getInitialProps(ctx) {
+        console.log('getInitialProps - categorize', Object.keys(ctx));
+        return {};
     }
 
     renderCategories() {
@@ -26,7 +42,20 @@ class Categorize extends React.Component {
             ));
     }
 
+    onSubmitTransactions() {
+        console.log('onSubmitTransactions');
+
+        // axios.post('http://localhost:3001/api/v1/transactions', this.props.state.transactions.slice(0, 9), {
+        //     headers: { 'Content-Type': 'multipart/form-data' }
+        // }).then(res => this.setState({ transactionStep: this.state.transactionStep += 1 }))
+        // .catch(err => this.setState({ uploadError: err }))
+
+        this.setState({ isFetching: true });
+    }
+
     render() {
+        const { isFetching } = this.state;
+
         return (
             <div className='page page-categorize'>
                 <div className='container'>
@@ -36,7 +65,7 @@ class Categorize extends React.Component {
                         <h4>We couldn't figure them all out, though. We'll need you to double-check that the categories are correct, and fill in the ones that are missing.</h4>
                         <ul className='transactions'>
                             {this.props.state.transactions.map((trans, i) => {
-                                if (i > 10) return null;
+                                if (i > 9) return null;
                                 
                                 return (
                                     <li className='transaction' key={i}>
@@ -56,6 +85,15 @@ class Categorize extends React.Component {
                                 );
                             })}
                         </ul>
+                        <div className='upload-submit'>
+                            <button className={classnames([
+                                'btn',
+                                { 'btn--disabled': isFetching },
+                                'btn--main'
+                            ])} disabled={isFetching} onClick={this.onSubmitTransactions} type='submit'>
+                            { isFetching ? <span>Loading... <Loader /></span> : 'More!' }
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ export default class GlobalProvider extends React.Component {
             categories: props.categories,
             transactions: null
         }
+        console.log('globalProvider');
     }
 
     static async getInitialProps({ Component, router, ctx }) {
@@ -19,7 +20,6 @@ export default class GlobalProvider extends React.Component {
             pageProps = await Component.getInitialProps(ctx)
         }
 
-        // this.props.actions.onUpdateGlobalContext({ categories });
         return { pageProps };
     }
 
@@ -40,15 +40,42 @@ export default class GlobalProvider extends React.Component {
 }
 
 export function withContext(Component) {
-    return function contextComponent(props) {
-        console.log('props', props);
+    let nextProps;
+
+    function contextComponent(pageProps) {
+        // console.log('pageProps', pageProps);
+
         return (
             <Consumer>
-                {rest => {
-                    console.log('rest', rest);
-                    return <Component {...props} {...rest}/>;
+                {props => {
+                    // console.log('props', props);
+                    return <Component {...pageProps} {...props}/>;
                 }}
             </Consumer>
         );
     }
+
+    contextComponent.getInitialProps = async (ctx) => {
+        console.log('getInitialProps - contextComponent', Object.keys(ctx));
+        let pageProps = {};
+
+        if (Component.getInitialProps) {
+            pageProps = await Component.getInitialProps(ctx);
+        }
+
+        return { pageProps };
+    }
+
+    return contextComponent;
+}
+
+withContext.getInitialProps = async (ctx) => {
+    console.log('getInitialProps - withContext', Object.keys(ctx));
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
+    }
+
+    return { pageProps };
 }

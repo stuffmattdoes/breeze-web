@@ -30,6 +30,11 @@ class Home extends React.Component {
         this.onSubmitTransactions = this.onSubmitTransactions.bind(this);
     }
 
+    static async getInitialProps(ctx) {
+        console.log('getInitialProps - index', Object.keys(ctx));
+        return {};
+    }
+
     onSubmitTransactions(e) {
         const { file } = this.state;
         let formData = new FormData();

@@ -40,6 +40,16 @@ footer {
     }
 }
 
+.upload-submit {
+    margin-top: 64px;
+    text-align: center;
+
+    .btn {
+        font-size: 24px;
+        padding: 16px 32px;
+    }
+}
+
 .valign {
     align-items: center;
     display: flex;
