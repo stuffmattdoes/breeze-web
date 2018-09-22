@@ -31,18 +31,19 @@ class Home extends React.Component {
     }
 
     static async getInitialProps(ctx) {
-        console.log('getInitialProps - index', Object.keys(ctx));
+        // console.log('getInitialProps - index', Object.keys(ctx));
         return {};
     }
 
     onSubmitTransactions(e) {
+        e.preventDefault();
         const { file } = this.state;
         let formData = new FormData();
 
-        formData.append('file', file);
+        formData.append('transactions_csv', file);
         axios.post('http://localhost:3001/api/v1/transactions', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(res => this.props.actions.onUpdateGlobalContext({ transactions: res.data }))
+        }).then(res => this.props.actions.onLoadTransactions({ transactions: res.data }))
         .catch(err => this.setState({ uploadError: err }))
         .then(() => Router.push('/categorize'));
 
@@ -56,7 +57,7 @@ class Home extends React.Component {
             <div className='page page-upload page--center'>
                 <div className='container'>
                     <div className='grid'>
-                        <form>
+                        <form onSubmit={this.onSubmitTransactions}>
                             <h1>Stop living paycheck to paycheck 😰 ❌</h1>
                             <h2>Instead, build a budget with us and learn to relax a little 🙃 ✅</h2>
                             <div className='dnd'>
@@ -71,7 +72,7 @@ class Home extends React.Component {
                                     </span>
                                     : <p className='dnd__text'>Download your bank transactions (<span className='text--bold'>.csv</span> file format) and upload here 👇</p>
                                 }
-                                <input className='dnd__input' onChange={e => this.setState({ file: this.inputRef.current.files[0] })} ref={this.inputRef} type='file'/>
+                                <input className='dnd__input' onChange={e => this.setState({ file: this.inputRef.current.files[0] })} name='csv' ref={this.inputRef} type='file'/>
                             </div>
                             <div className='upload-submit'>
                                 <button className={classnames([

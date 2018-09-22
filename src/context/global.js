@@ -9,11 +9,10 @@ export default class GlobalProvider extends React.Component {
             categories: props.categories,
             transactions: null
         }
-        console.log('globalProvider');
     }
 
     static async getInitialProps({ Component, router, ctx }) {
-        console.log('getInitialProps - global');
+        // console.log('getInitialProps - global');
         let pageProps = {};
 
         if (Component.getInitialProps) {
@@ -23,13 +22,26 @@ export default class GlobalProvider extends React.Component {
         return { pageProps };
     }
 
+    updateTransaction({ id, payload }) {
+        const { categories, transactions } = this.state;
+
+        let nextTransaction = transactions.find(transaction => transaction.id === id);
+
+        return {
+            ...nextTransaction,
+            ...payload
+        }
+    }
+
     render() {
         return (
             <Provider value={{
                 actions: {
-                    // onLoadTransactions: transactions => this.setState({ transactions }),
-                    onUpdateTransaction: (id, payload) => this.setState({ transactions: this.state.transactions.map(trans => trans.id !== id ? trans : { ...trans, ...payload }) }),
-                    onUpdateGlobalContext: payload => this.setState(payload)
+                    onLoadTransactions: ({ transactions }) => this.setState({ transactions }),
+                    onUpdateTransaction: (id, payload) => {
+                        let transactions = this.state.transactions.map(trans => trans.id !== id ? trans : { ...trans, ...payload})
+                        this.setState({ transactions });
+                    }
                 },
                 state: this.state
             }}>
@@ -56,7 +68,7 @@ export function withContext(Component) {
     }
 
     contextComponent.getInitialProps = async (ctx) => {
-        console.log('getInitialProps - contextComponent', Object.keys(ctx));
+        // console.log('getInitialProps - contextComponent', Object.keys(ctx));
         let pageProps = {};
 
         if (Component.getInitialProps) {
@@ -70,7 +82,7 @@ export function withContext(Component) {
 }
 
 withContext.getInitialProps = async (ctx) => {
-    console.log('getInitialProps - withContext', Object.keys(ctx));
+    // console.log('getInitialProps - withContext', Object.keys(ctx));
     let pageProps = {};
 
     if (Component.getInitialProps) {

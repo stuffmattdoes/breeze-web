@@ -7,7 +7,7 @@ import GlobalProvider, { withContext } from '../context/global';
 class MyApp extends App {
     // Next.js-specific lifecycle method, called on server, populates as props in component
     static async getInitialProps({ Component, ctx, router }) {
-        console.log('getInitialProps - app');
+        // console.log('getInitialProps - app');
         const userAgent = ctx.req ? ctx.req.headers['user-agent'] : navigator.userAgent;
         const res = await fetch('http://localhost:3001/api/v1/categories');
         const categories = await res.json();
